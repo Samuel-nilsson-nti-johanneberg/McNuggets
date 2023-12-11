@@ -32,13 +32,15 @@ class Request
         return output
     end
 
-
-    # jag ska göra så att params funktion inte bara fungerar på denna filen utan även dem andra
     def params()
-        params = @first[1].split("=")
-        minrating = params[2]
-        type = params[1].split("&")[0]
-        output = "type => #{type}, minrating => #{minrating}"
+        params_string = @first[1].split('?')[1] 
+        return {} if params_string.nil? 
+    
+        params_array = params_string.split('&').map { |param| param.split('=') }
+        params_hash = params_array.to_h
+        params_hash_keys = params_hash.keys
+
+        output = "type => #{params_hash[params_hash_keys[0]]}, minrating => #{params_hash[params_hash_keys[1]]}"
     end
 
 

@@ -1,47 +1,53 @@
 class Request
  
-    attr_reader :request_string
+    attr_reader :request_string, :method, :resource, :version, :headers, :params
 
     def initialize(request_string)
         @request_string = request_string
         first, *rest = request_string.split("\n")
-        @first = first.split(" ")
-        @rest = rest  
+        first = first.split(" ")
+        parse_method(first)
+        parse_resource(first)
+        parse_version(first)
+        parse_headers(rest)
+        parse_params(first)
+        parse_params(rest)
     end
 
-    def method()
-        method = @first[0]
+    def parse_method(first)
+        @method = first[0]
     end
 
-    def resource()
-        resource = @first[1]
+    def parse_resource(first)
+        @resource = first[1]
     end
     
-    def version()
-        version = @first[2]
+    def parse_version(first)
+        @version = first[2]
     end
 
-    def headers()
-        i = 0
-        output = []
-        while i < @rest.length
-            temp = @rest[i].split
-            output << temp[1]
-            i +=1
+    def parse_headers(rest)
+        @headers = []       
+        rest.each do |rest|
+            key, value = rest.split
+            if value != nil
+                @headers << {key => value}
+            end
         end
-        return output
     end
 
-    def params()
-        params_string = @first[1].split('?')[1] 
-        return {} if params_string.nil? 
-    
-        params_array = params_string.split('&').map { |param| param.split('=') }
-        params_hash = params_array.to_h
-        params_hash_keys = params_hash.keys
-
-        output = "type => #{params_hash[params_hash_keys[0]]}, minrating => #{params_hash[params_hash_keys[1]]}"
+    def parse_params(params_string)
+        p "hej"
+        if params_string.include?("&") == true
+            tmp = params_string.split('&')
+            p "hej"
+            @params = []
+            tmp.each do |x|
+                key, value = x.split('=')
+                @params << {key => value}
+            end
+        end
+        p "hej"
     end
-
 
 end

@@ -44,7 +44,9 @@ class Request
             @params = []
             tmp.each do |x|
                 key, value = x.split('=')
-                @params << {key => value}
+                if value != nil
+                    @params << {key => value}
+                end
             end
         end
         p "hej"

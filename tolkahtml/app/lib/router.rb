@@ -5,7 +5,7 @@ def initialize()
 end
 
 def add_routes(method, route)
-    @routes << route
+    @routes << route(route,method)
 end
 
 def match_route(request)

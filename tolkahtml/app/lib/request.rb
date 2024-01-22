@@ -37,19 +37,18 @@ class Request
     end
 
     def parse_params(params_string)
-        p "hej"
-        if params_string.include?("&") == true
-            tmp = params_string.split('&')
-            p "hej"
-            @params = []
-            tmp.each do |x|
-                key, value = x.split('=')
-                if value != nil
-                    @params << {key => value}
+        params_string.each do |params_string|
+            if params_string.include?("&") == true
+                tmp = params_string.split('&')
+                @params = []
+                tmp.each do |x|
+                    key, value = x.split('=')
+                    if value != nil
+                        @params << {key => value}
+                    end
                 end
             end
         end
-        p "hej"
     end
 
 end

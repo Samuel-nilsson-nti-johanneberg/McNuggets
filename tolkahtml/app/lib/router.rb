@@ -1,12 +1,20 @@
 class Router
 
-def initialize()
-    @routes = []
+    def initialize()
+        @routes = {}
+    end
+
+
+    def add_route(method, route)
+        @routes.store(route,method)
+    end
+
+    def match_route(request)
+        @routes.each do |route|
+            if route == request.method
+                puts route
+            end
+        end
+    end
 end
-
-def add_routes(method, route)
-    @routes << route(route,method)
-end
-
-def match_route(request)
-
+    

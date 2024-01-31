@@ -14,7 +14,8 @@ r = Router.new
 
 
 
-r.add_route("GET", "/")
+r.add_route("GET", request)
+r.add_route("GET", "/get-index.request.txt")
 
 p r.match_route(request)
 

@@ -1,23 +1,31 @@
 require_relative './lib/request.rb'
 require_relative './lib/router.rb'
 
-request_string = File.read('get-index.request.txt')
-request = Request.new(request_string)
+# request_string = File.read('get-index.request.txt')
+# request = Request.new(request_string)
 
-p request.method 
-p request.resource 
-p request.version 
-p request.headers
-p request.params
+# p request.method 
+# p request.resource 
+# p request.version 
+# p request.headers
+# p request.params
 
 r = Router.new
 
 
 
-r.add_route("GET", request)
-r.add_route("GET", "/get-index.request.txt")
+#get "/user/:id" do
+#
+#end
 
-r.match_route("/get-index.request.txt")
+#    File.read("./public/index.html")
+#end
+
+
+
+# r.add_route("GET", "/get-index.request.txt")
+
+# r.match_route("/get-index.request.txt")
 
 # p r.match_route(request)
 

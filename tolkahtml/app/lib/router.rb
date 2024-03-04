@@ -1,7 +1,8 @@
+require 'debug'
 class Router
 
     def initialize()
-        @routes = {}
+        @routes = []
     end
 
 
@@ -16,40 +17,24 @@ class Router
             regex_route = regex_route.gsub((/\//), '\/')
             puts regex_route
 
-            @routes[regex_route] = method
+           # @routes[regex_route] = method
             # @routes[/^#{regex_route}$/] = method
 
-        else
-            @routes[route] = method
+#        else
+            @routes << {route: route, method: method}
+            # @routes[route] = method
         end
 
     end
 
-    # def add_route(method, route)
-    #     if route.is_a?(String)
-    #         if route.include?(":")
+    
     #             regex_route = route.gsub(/(:\w+)/, '(\w+)')
     #             regex_route = regex_route.gsub(/\//, '\/')
     #             @routes[/^#{regex_route}$/] = method
-    #         else
-    #             @routes[route] = method
-    #         end
-    #     elsif route.is_a?(Regexp)
-    #         @routes[route] = method
-    #     else
-    #         raise ArgumentError, "Invalid route format: #{route}"
-    #     end
-    # end
 
-    # def match_route(request)
-    #     @routes.each do |route|
-    #         if route == request.method
-    #             puts route
-    #         end
-    #     end
-    # end
 
     def match_route(request)
+        binding.break
         @routes.each do |route, method|
             if route.is_a?(Regexp)
                 match_data = request.match(route)
@@ -63,7 +48,7 @@ class Router
             end
         end
     
-        puts "No matching route found for #{request}"
+        puts "No matching route found for #{request.resource}"
         nil
     end
 end

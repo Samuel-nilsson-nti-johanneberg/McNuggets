@@ -1,4 +1,7 @@
 require 'socket'
+require_relative 'router'
+require_relative 'request'
+
 
 class HTTPServer
 
@@ -9,8 +12,12 @@ class HTTPServer
     def start
         server = TCPServer.new(@port)
         puts "Listening on #{@port}"
-        #router = router.new
-        #router.add_route...
+        
+        router = Router.new
+        
+        router.add_route("GET", "/user/:id")
+        router.add_route("GET", "/banan/:id/paj")
+
 
         while session = server.accept
             data = ""
@@ -22,8 +29,9 @@ class HTTPServer
             puts data
             puts "-" * 40
 
-            #request = Request.new(data)
-            router.route(request)
+            request = Request.new(data)
+            match = router.match_route(request)
+            p match
        
             #request = Request.new(data)
             #router.match_route(request)
@@ -40,5 +48,5 @@ class HTTPServer
     end
 end 
 
-server = HTTPServer.new(4567)
+server = HTTPServer.new(9292)
 server.start

@@ -22,6 +22,8 @@ class Router
 
 #        else
             @routes << {route: route, method: method}
+            p route
+            p method
             # @routes[route] = method
         end
 
@@ -51,5 +53,10 @@ class Router
         puts "No matching route found for #{request.resource}"
         nil
     end
+
+    #öppna hash med nyckel
+    #ta ut route
+    #ta ur method
+    #kolla om dem matchar
 end
     

@@ -22,9 +22,10 @@ class Router
 
 #        else
             @routes << {route: route, method: method}
-            p route
-            p method
+            p @routes
+
             # @routes[route] = method
+
         end
 
     end
@@ -36,18 +37,43 @@ class Router
 
 
     def match_route(request)
-        binding.break
+        # binding.break
+        @routes
+        route3 = @routes[0]
+
+
+        p route3[:route]
+
+
+        route2 = @routes[0].first[1]
+        route2
+        # route2.split(",")
+        # p a
+        # p route
         @routes.each do |route, method|
-            if route.is_a?(Regexp)
-                match_data = request.match(route)
-                if match_data
-                    puts "Matched route: #{route} with method #{method}"
-                    return method
-                end
-            elsif route == request
-                puts "Matched route: #{route} with method #{method}"
-                return method
-            end
+    
+            # p @routes[route]
+            # if @routes[]
+            #     p @routes
+            #     p x
+            # end
+
+            # if @routes{0} == route && @routes{1} == method
+            #     puts "found a match"
+            # else
+            #     puts "no match"
+            # end
+
+            # if route.is_a?(Regexp)
+            #     match_data = request.match(route)
+            #     if match_data
+            #         puts "Matched route: #{route} with method #{method}"
+            #         return method
+            #     end
+            # elsif route == request
+            #     puts "Matched route: #{route} with method #{method}"
+            #     return method
+            # end
         end
     
         puts "No matching route found for #{request.resource}"

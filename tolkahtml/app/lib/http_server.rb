@@ -18,6 +18,10 @@ class HTTPServer
         router.add_route("GET", "/user/:id")
         router.add_route("GET", "/banan/:id/paj")
 
+        request_string = File.read('../get-index.request.txt')
+        request = Request.new(request_string)
+        router.match_route(request)
+
 
         while session = server.accept
             data = ""

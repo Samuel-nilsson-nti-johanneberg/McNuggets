@@ -6,7 +6,7 @@ class Router
     end
 
 
-    def add_route(method, route)
+    def add_route(method, route, &blk)
         # @routes.store(route,method)
 
         # if route.match(/:/)
@@ -17,11 +17,11 @@ class Router
             regex_route = regex_route.gsub((/\//), '\/')
 #            puts regex_route
 
-           # @routes[regex_route] = method
+            # @routes[regex_route] = method
             # @routes[/^#{regex_route}$/] = method
 
 #        else
-            @routes << {route: route, method: method}
+            @routes << {route: route, method: method, block: blk}
 
             # @routes[route] = method
 
@@ -37,7 +37,6 @@ class Router
 
     def match_route(request)
         # binding.break
-        p request
         p @routes
         @method = request.instance_variable_get(:@method)
         @route = request.instance_variable_get(:@resource)
@@ -45,18 +44,14 @@ class Router
         @routes.each do |route|
             # route2 = route[:route]
 
- 
             if route[:method] == @method
                 
-                p "method match"
                 if @route == route[:route]
                     p "route match"
-                    p route
+                    return route
                 end
             
             end
-
-            #return match
             
         end
     
@@ -64,9 +59,5 @@ class Router
         nil
     end
 
-    #öppna hash med nyckel
-    #ta ut route
-    #ta ur method
-    #kolla om dem matchar
 end
     

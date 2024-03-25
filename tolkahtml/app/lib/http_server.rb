@@ -15,8 +15,12 @@ class HTTPServer
         
         router = Router.new
         
-        router.add_route("GET", "/user/:id")
+      
+        router.add_route("GET", "/user/:id") do
+            File.read("./views/index.html")
+        end
         router.add_route("GET", "/banan/:id/paj")
+        # router.add_route()
 
         # request_string = File.read('../get-index.request.txt')
         # request = Request.new(request_string)
@@ -35,18 +39,29 @@ class HTTPServer
 
             request = Request.new(data)
             match = router.match_route(request)
-            p match
-       
-            #request = Request.new(data)
-            #router.match_route(request)
+            if match
+                status = 200
+                html = match[:block].call
+            else
+                #finns filen i public?
 
-            html = "<h1>Hello, World!</h1>"
+                
+                status = 404
+                html = "nooot"
+            end
+            
 
-            session.print "HTTP/1.1 200\r\n"
+            session.print "HTTP/1.1 #{status}\r\n"
             session.print "Content-Type: text/html\r\n"
-            session.print "\r\n"
+            session.print "\r\n"            
             session.print html
             session.close
+
+            
+            
+
+
+
 
         end
     end

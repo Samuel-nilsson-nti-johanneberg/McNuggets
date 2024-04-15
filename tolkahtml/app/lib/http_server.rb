@@ -22,9 +22,9 @@ class HTTPServer
         router.add_route("GET", "/banan/:id/paj")
         # router.add_route()
 
-        # request_string = File.read('../get-index.request.txt')
-        # request = Request.new(request_string)
-        # router.match_route(request)
+        router.add_route("GET", "/") do
+            File.read("../views/index.html")
+        end
 
 
         while session = server.accept
@@ -50,6 +50,9 @@ class HTTPServer
                 html = "nooot"
             end
             
+
+
+        
 
             session.print "HTTP/1.1 #{status}\r\n"
             session.print "Content-Type: text/html\r\n"

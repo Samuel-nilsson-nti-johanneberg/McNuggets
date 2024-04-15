@@ -19,8 +19,8 @@ class Router
 
             # @routes[regex_route] = method
             # @routes[/^#{regex_route}$/] = method
-
-#        else
+            @routes << {route: route, method: method, block: blk}
+        else
             @routes << {route: route, method: method, block: blk}
 
             # @routes[route] = method
@@ -43,7 +43,7 @@ class Router
 
         @routes.each do |route|
             # route2 = route[:route]
-
+            
             if route[:method] == @method
                 
                 if @route == route[:route]

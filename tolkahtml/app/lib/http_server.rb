@@ -17,7 +17,7 @@ class HTTPServer
         
       
         router.add_route("GET", "/user/:id") do
-            File.read("./views/index.html")
+            File.read("../views/index.html")
         end
         router.add_route("GET", "/banan/:id/paj") do |id|
             "<h1>Weet #{id}</h1>"
@@ -45,27 +45,36 @@ class HTTPServer
             request = Request.new(data)
             match = router.match_route(request)
             if match
-                status = 200
-               
-                html = match[:block].call(match[:params])
-            elsif File.file?("./public#{request.resource}")
-                p "found file"
-            else
-                #finns filen i public?
 
+                status = 200    
+                content = match[:block].call(match[:params])
+                content_type = "text/html"
+
+            elsif File.file?("../public#{request.resource}")
+
+                content = File.open("../public#{request.resource}", "rb").read
+
+                p "_____________________"
+                p request.resource.split(".")[1]
+
+
+                if request.resource.split(".")[1] == "jpg"
+                    content_type = "image/jpeg"
+                elsif request.resource.split(".")[1] == "css"
+                    content_type = "text/css"
+                elsif request.resource.split(".")[1] == "png"
+                    content_type = "text/png"
+                end
+            else
                 
                 status = 404
-                html = "nooot"
+                content = "nooot"
             end
             
-
-
-        
-
             session.print "HTTP/1.1 #{status}\r\n"
-            session.print "Content-Type: text/html\r\n"
+            session.print "Content-Type: #{content_type}\r\n"
             session.print "\r\n"            
-            session.print html
+            session.print content
             session.close
 
             

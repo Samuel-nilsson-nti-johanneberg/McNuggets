@@ -1,31 +1,24 @@
-require_relative './lib/request.rb'
+require_relative './lib/http_server'
 require_relative './lib/router.rb'
 
-# request_string = File.read('get-index.request.txt')
-# request = Request.new(request_string)
-
-# p request.method 
-# p request.resource 
-# p request.version 
-# p request.headers
-# p request.params
-
-r = Router.new
+router = Router.new
 
 
+router.add_route("GET", "/user/:id") do
+    File.read("../views/index.html")
+end
+router.add_route("GET", "/banan/:id/paj") do |id|
+    "<h1>Weet #{id}</h1>"
+end
+router.add_route("GET", "/senap/:id/paj/:hej") do |id, hej|
+    "<h1>Weet #{id.to_i * hej.to_i}</h1>"
+end
 
-#get "/user/:id" do
-#
-#end
 
-#    File.read("./public/index.html")
-#end
+router.add_route("GET", "/") do
+    File.read("../views/index.html")
+end
 
-
-
-# r.add_route("GET", "/get-index.request.txt")
-
-# r.match_route("/get-index.request.txt")
-
-# p r.match_route(request)
+server = HTTPServer.new(router, 9292)
+server.start
 

@@ -20,8 +20,8 @@ class Router
 
     def match_route(request)
         p @routes
-        @method = request.instance_variable_get(:@method)
-        @resource = request.instance_variable_get(:@resource)
+        @method = request.method
+        @resource = request.resource
 
         @routes.each do |route|
             

@@ -1,37 +1,23 @@
-require 'socket'
-require_relative 'router'
-require_relative 'request'
-require_relative 'http_server'
-
+require 'debug'
+require_relative 'mime_type'
 
 class Response
 
-    def initialize(port)
-    
-        if match
+    def initialize(request, match)
+        @request = request
+        @match = match
+    end
 
+    def print_response(session)
+        if @match
             status = 200    
-            content = match[:block].call(match[:params])
-            content_type = "text/html"
-
-        elsif File.file?("../public#{request.resource}")
-            content = File.open("../public#{request.resource}", "rb").read
-
-            content_resources = {jpg: "image/jpeg", css: "text/css", png: "image/png", js: "text/javascript"}
-            content_type = content_resources[request.resource.split(".")[1]]
-            
-            # request_resource = request.resource.split(".")[1]
-            # if request_resource == "jpg"
-            #     content_type = "image/jpeg"
-            # elsif request_resource == "css"
-            #     content_type = "text/css"
-            # elsif request_resource == "png"
-            #     content_type = "image/png"
-            # elsif request_resource == "js"
-            #     content_type = "text/javascript"
-            # end
+            content = @match[:block].call(@match[:params])
+            content_type = MimeType.for(:html)
+        elsif File.file?("../public#{@request.resource}")
+            content = File.open("../public#{@request.resource}", "rb").read
+            content_type = MimeType.for(@request.resource.split(".")[1].to_sym)
+            status = 200
         else
-            
             status = 404
             content = "nooot"
         end

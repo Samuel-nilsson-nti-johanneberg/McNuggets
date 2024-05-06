@@ -1,6 +1,7 @@
 require 'socket'
 require_relative 'router'
 require_relative 'request'
+# require_relative 'response'
 require 'debug'
 
 class HTTPServer
@@ -44,44 +45,41 @@ class HTTPServer
 
             request = Request.new(data)
             match = router.match_route(request)
-            if match
+            
+            #
+            response = Response.new(request, match)
+            response.print_response(session)
 
-                status = 200    
-                content = match[:block].call(match[:params])
-                content_type = "text/html"
+            # if match
 
-            elsif File.file?("../public#{request.resource}")
+            #     status = 200    
+            #     content = match[:block].call(match[:params])
+            #     content_type = "text/html"
 
-                content = File.open("../public#{request.resource}", "rb").read
+            # elsif File.file?("../public#{request.resource}")
+            #     content = File.open("../public#{request.resource}", "rb").read
 
-                p "_____________________"
-                p request.resource.split(".")[1]
-
-
-                if request.resource.split(".")[1] == "jpg"
-                    content_type = "image/jpeg"
-                elsif request.resource.split(".")[1] == "css"
-                    content_type = "text/css"
-                elsif request.resource.split(".")[1] == "png"
-                    content_type = "text/png"
-                end
-            else
+            #     request_resource = request.resource.split(".")[1]
+            #     if request_resource == "jpg"
+            #         content_type = "image/jpeg"
+            #     elsif request_resource == "css"
+            #         content_type = "text/css"
+            #     elsif request_resource == "png"
+            #         content_type = "text/png"
+            #     elsif request_resource == "js"
+            #         content_type = "text/javascript"
+            #     end
+            # else
                 
-                status = 404
-                content = "nooot"
-            end
+            #     status = 404
+            #     content = "nooot"
+            # end
             
-            session.print "HTTP/1.1 #{status}\r\n"
-            session.print "Content-Type: #{content_type}\r\n"
-            session.print "\r\n"            
-            session.print content
-            session.close
-
-            
-            
-
-
-
+            # session.print "HTTP/1.1 #{status}\r\n"
+            # session.print "Content-Type: #{content_type}\r\n"
+            # session.print "\r\n"            
+            # session.print content
+            # session.close
 
         end
     end

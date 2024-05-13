@@ -4,13 +4,19 @@ require_relative 'request'
 require_relative 'response'
 require 'debug'
 
+# Class representing an HTTP server
 class HTTPServer
 
+    # Initializes a new HTTPServer object.
+    #
+    # @param router [Router] the router object to use for routing requests
+    # @param port [Integer] the port number on which the server will listen
     def initialize(router, port)
         @port = port
         @router = router
     end
 
+    # Starts the HTTP server and listens for incoming requests.
     def start
         server = TCPServer.new(@port)
         puts "Listening on #{@port}"
